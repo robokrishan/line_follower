@@ -16,10 +16,10 @@ while True:
     
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    blurred = cv2.imdecode(blurred, -1)
+    # blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    # blurred = cv2.imdecode(blurred, -1)
 
-    black_line = cv2.inRange(blurred, (0,0,0), (50,50,50))
+    black_line = cv2.inRange(gray, (0,0,0), (50,50,50))
     kernel = np.ones((3,3), np.uint8)
 
     black_line = cv2.erode(black_line, kernel, iterations=5)
