@@ -13,10 +13,7 @@ picam2.start()
 while True:
     frame = picam2.capture_array()
     
-    rgb = cv2.cvtColor(frame, 4)
-
-    # rgb = cv2.flip(rgb, 1)
-    # rgb = cv2.flip(rgb, 0)
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     cv2.imshow("Camera Feed", rgb)
 
