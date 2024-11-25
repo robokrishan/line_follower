@@ -2,6 +2,10 @@ from picamera2 import Picamera2
 from libcamera import Transform
 import cv2
 import numpy as np
+import sys
+import board
+import busio
+from adafruit_pca9685 import PCA9685
 
 # Initialize camera
 picam2 = Picamera2()
@@ -11,6 +15,13 @@ cam_config = picam2.create_preview_configuration(
 )
 picam2.configure(cam_config)
 picam2.start()
+
+# Create I2C bus and PCA9685 instance
+i2c = busio.I2C(board.SCL, board.SDA)
+pca = PCA9685(i2c)
+
+# Initialize PCA9685 and set PWM frequency
+pca.frequency = 50  # Set frequency to 50Hz for servos/ESC
 
 while True:
     # Capture frame from the camera
@@ -52,12 +63,27 @@ while True:
                       (box_start_x + x, box_start_y + y), 
                       (box_start_x + x + w, box_start_y + y + h), 
                       (255, 0, 0), 2)
+        
+        box_l = box_start_x + x
+        box_r = box_start_x + x + w
 
         # Draw a center line relative to the full frame
         cv2.line(frame, 
                  (box_start_x + x + w // 2, box_start_y + y), 
                  (box_start_x + x + w // 2, box_start_y + y + h), 
                  (0, 255, 0), 2)
+        
+        weight_l = (box_start_x + x + w) - box_l
+        weight_r = box_r - (box_start_x + x + w)
+
+        if weight_l > weight_r:
+            val = int(weight_l / 200)
+            steer = (val*203) + 203
+        else:
+            val = int(weight_r / 200)
+            steer = 408 - (val*203)
+
+        pca.channels[7].duty_cycle = steer
 
     # Draw the green box indicating the region of interest
     cv2.rectangle(frame, 
