@@ -3,12 +3,12 @@ import cv2
 
 picam2 = Picamera2()
 picam2.start_preview()
-
-picam2.configure(picam2.preview_configuration())
 picam2.start()
 
 while True:
     frame = picam2.capture_array()
+    
+    rgb = cv2.cvtColor(frame, 4)
 
     cv2.imshow("Camera Feed", frame)
 
