@@ -3,7 +3,7 @@ from libcamera import Transform
 import cv2
 import numpy as np
 import sys
-import board
+# import board
 import busio
 from adafruit_pca9685 import PCA9685
 
