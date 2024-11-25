@@ -1,7 +1,12 @@
 from picamera2 import Picamera2
+from libcamera import ColorSpace, Transform
 import cv2
 
 picam2 = Picamera2()
+preview_config = picam2.create_preview_configuration(\
+    transform=Transform(hflip=True, vflip=True),\
+    height=720,\
+    width=1280)
 picam2.start()
 
 while True:
@@ -9,8 +14,8 @@ while True:
     
     rgb = cv2.cvtColor(frame, 4)
 
-    rgb = cv2.flip(rgb, 1)
-    rgb = cv2.flip(rgb, 0)
+    # rgb = cv2.flip(rgb, 1)
+    # rgb = cv2.flip(rgb, 0)
 
     cv2.imshow("Camera Feed", rgb)
 
