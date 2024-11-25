@@ -18,7 +18,7 @@ STEERING_CHANNEL = 7  # Servo connected to channel 7
 ESC_CHANNEL = 0  # ESC connected to channel 0
 DUTY_MIN = 150  # Minimum pulse width for the servo
 DUTY_MAX = 600  # Maximum pulse width for the servo
-DUTY_THROTTLE = 310  # Fixed duty cycle for ESC (throttle)
+DUTY_THROTTLE = 320  # Fixed duty cycle for ESC (throttle)
 
 # Initialize I2C bus
 bus = smbus2.SMBus(1)
