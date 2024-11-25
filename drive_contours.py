@@ -15,8 +15,10 @@ while True:
     # Capture frame from the camera
     frame = picam2.capture_array()
 
+    frame_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+
     # Convert RGB to BGR (OpenCV expects BGR)
-    frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    frame_bgr = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
 
     # Detect black lines using inRange
     black_line = cv2.inRange(frame_bgr, (0, 0, 0), (50, 50, 50))
