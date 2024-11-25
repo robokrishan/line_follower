@@ -19,16 +19,11 @@ while True:
     # Convert to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-    # Apply a mask to define the region of interest (ROI)
-    mask = np.ones_like(gray) * 255  # Create a white mask (255 = included, 0 = excluded)
-    mask[:, :150] = 0  # Exclude pixels from column 0 to 150
-    mask[:, 500:] = 0  # Exclude pixels from column 500 to 640
+    # Convert grayscale back to BGR
+    gray_bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
 
-    # Apply the mask to the grayscale image
-    roi = cv2.bitwise_and(gray, mask)
-
-    # Threshold to detect the dark line (adjust threshold as needed)
-    _, binary = cv2.threshold(roi, 50, 255, cv2.THRESH_BINARY_INV)
+    # Threshold to detect the "dark" line (adjust threshold as needed)
+    _, binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY_INV)
 
     # Morphological operations to clean up noise
     kernel = np.ones((3, 3), np.uint8)
@@ -47,13 +42,13 @@ while True:
         x, y, w, h = cv2.boundingRect(largest_contour)
 
         # Draw the bounding rectangle
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        cv2.rectangle(gray_bgr, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         # Draw a center line
-        cv2.line(frame, (x + w // 2, y), (x + w // 2, y + h), (0, 255, 0), 2)
+        cv2.line(gray_bgr, (x + w // 2, y), (x + w // 2, y + h), (0, 255, 0), 2)
 
     # Display the processed frame
-    cv2.imshow("Camera Feed", frame)
+    cv2.imshow("Camera Feed", gray_bgr)
 
     # Exit loop when 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
