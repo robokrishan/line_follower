@@ -25,15 +25,8 @@ while True:
     box_start_x, box_start_y = center_x - 100, center_y - 100
     box_end_x, box_end_y = center_x + 100, center_y + 100
 
-    # Create a mask with the box region
-    mask = np.zeros_like(gray)  # Black mask (all 0)
-    mask[box_start_y:box_end_y, box_start_x:box_end_x] = 255  # White box
-
-    # Apply the mask to the grayscale image
-    roi = cv2.bitwise_and(gray, mask)
-
-    # Draw the box on the frame for visualization
-    cv2.rectangle(frame, (box_start_x, box_start_y), (box_end_x, box_end_y), (0, 255, 0), 2)
+    # Crop the 200x200 region
+    roi = gray[box_start_y:box_end_y, box_start_x:box_end_x]
 
     # Threshold to detect the dark line (adjust threshold as needed)
     _, binary = cv2.threshold(roi, 50, 255, cv2.THRESH_BINARY_INV)
@@ -43,7 +36,7 @@ while True:
     binary = cv2.erode(binary, kernel, iterations=5)
     binary = cv2.dilate(binary, kernel, iterations=9)
 
-    # Find contours
+    # Find contours in the cropped region
     contours, hierarchy = cv2.findContours(binary.copy(),
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
@@ -54,11 +47,23 @@ while True:
         largest_contour = max(contours, key=cv2.contourArea)
         x, y, w, h = cv2.boundingRect(largest_contour)
 
-        # Draw the bounding rectangle within the box
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        # Draw the bounding rectangle relative to the full frame
+        cv2.rectangle(frame, 
+                      (box_start_x + x, box_start_y + y), 
+                      (box_start_x + x + w, box_start_y + y + h), 
+                      (255, 0, 0), 2)
 
-        # Draw a center line
-        cv2.line(frame, (x + w // 2, y), (x + w // 2, y + h), (0, 255, 0), 2)
+        # Draw a center line relative to the full frame
+        cv2.line(frame, 
+                 (box_start_x + x + w // 2, box_start_y + y), 
+                 (box_start_x + x + w // 2, box_start_y + y + h), 
+                 (0, 255, 0), 2)
+
+    # Draw the green box indicating the region of interest
+    cv2.rectangle(frame, 
+                  (box_start_x, box_start_y), 
+                  (box_end_x, box_end_y), 
+                  (0, 255, 0), 2)
 
     # Display the processed frame
     cv2.imshow("Camera Feed", frame)
