@@ -6,7 +6,7 @@ import numpy as np
 picam2 = Picamera2()
 cam_config = picam2.create_preview_configuration(\
     transform=Transform(hflip=True, vflip=True),\
-    main={'size':(1280, 720)})
+    main={'size':(640, 360)})
 
 picam2.configure(cam_config)
 picam2.start()
