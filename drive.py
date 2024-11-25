@@ -16,7 +16,7 @@ while True:
     
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    edges = cv2.canny(gray, 50, 200)
+    edges = cv2.Canny(gray, 50, 200)
     
     lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=200, maxLineGap=10)
 
