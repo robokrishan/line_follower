@@ -40,8 +40,15 @@ while True:
         # Draw the rectangle
         cv2.rectangle(frame_bgr, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
+        p1 = (x + w // 2, y)
+        p2 = (x + w // 2, y + h)
+
         # Draw a center line
-        cv2.line(frame_bgr, (x + w // 2, y), (x + w // 2, y + h), (0, 255, 0), 2)
+        cv2.line(frame_bgr, p1, p2, (0, 255, 0), 2)
+
+        offset = p1[0] - (1280/2)
+
+        cv2.putText(frame_bgr, str(offset), (1150, 20),)
 
     # Display the processed frame
     cv2.imshow("Camera Feed", frame_bgr)
