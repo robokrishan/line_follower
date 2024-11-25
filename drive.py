@@ -20,7 +20,7 @@ while True:
 
     edges = cv2.Canny(blurred, 50, 150)
     
-    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 50, minLineLength=200, maxLineGap=50)
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 10, minLineLength=200, maxLineGap=50)
 
     if lines is not None:
         for line in lines:
