@@ -83,6 +83,7 @@ while True:
             val = int(weight_r / 200)
             steer = 408 - (val*203)
 
+        print(steer)
         pca.channels[7].duty_cycle = steer
 
     # Draw the green box indicating the region of interest
