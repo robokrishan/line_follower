@@ -23,7 +23,7 @@ while True:
     gray_bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
 
     # Threshold to detect the "dark" line (adjust threshold as needed)
-    _, binary = cv2.threshold(gray, 50, 255, cv2.THRESH_BINARY_INV)
+    _, binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY_INV)
 
     # Morphological operations to clean up noise
     kernel = np.ones((3, 3), np.uint8)
