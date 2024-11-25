@@ -48,7 +48,7 @@ while True:
 
         offset = p1[0] - (1280/2)
 
-        cv2.putText(frame_bgr, str(offset), (1150, 20),)
+        cv2.putText(frame_bgr, str(offset), (1150, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
     # Display the processed frame
     cv2.imshow("Camera Feed", frame_bgr)
