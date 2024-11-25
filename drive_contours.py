@@ -17,7 +17,7 @@ picam2.configure(cam_config)
 picam2.start()
 
 # Create I2C bus and PCA9685 instance
-i2c = busio.I2C(board.SCL, board.SDA)
+i2c = busio.I2C(3, 2)
 pca = PCA9685(i2c)
 
 # Initialize PCA9685 and set PWM frequency
