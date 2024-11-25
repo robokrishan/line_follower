@@ -1,19 +1,40 @@
-import sys
-import board
-import busio
-from adafruit_pca9685 import PCA9685
-from picamera2 import Picamera2
-from libcamera import Transform
+import smbus2
 import cv2
 import numpy as np
+from picamera2 import Picamera2
+from libcamera import Transform
+
+# PCA9685 Default Address
+I2C_ADDR = 0x40
+
+# Registers
+MODE1 = 0x00
+PRESCALE = 0xFE
+LED0_ON_L = 0x06
+
+# Define the steering channel and limits
+STEERING_CHANNEL = 7  # Servo connected to channel 7
+DUTY_MIN = 203  # Minimum pulse width for the servo
+DUTY_MAX = 408  # Maximum pulse width for the servo
+
+# Initialize I2C bus
+bus = smbus2.SMBus(1)
 
 # Initialize PCA9685
-i2c = busio.I2C(board.SCL, board.SDA)
-pca = PCA9685(i2c)
-pca.frequency = 50  # Set frequency for servos
-STEERING_CHANNEL = 7  # Servo connected to channel 7
-DUTY_MIN = 203  # Minimum duty cycle for steering servo
-DUTY_MAX = 408  # Maximum duty cycle for steering servo
+def set_pwm_freq(freq_hz):
+    prescale_val = int(25000000.0 / (4096 * freq_hz) - 1)
+    bus.write_byte_data(I2C_ADDR, MODE1, 0x10)  # Sleep mode
+    bus.write_byte_data(I2C_ADDR, PRESCALE, prescale_val)
+    bus.write_byte_data(I2C_ADDR, MODE1, 0x80)  # Restart
+
+def set_pwm(channel, on, off):
+    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel, on & 0xFF)
+    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel + 1, on >> 8)
+    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel + 2, off & 0xFF)
+    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel + 3, off >> 8)
+
+# Set PWM frequency to 50Hz for servos
+set_pwm_freq(50)
 
 # Initialize camera
 picam2 = Picamera2()
@@ -53,13 +74,13 @@ while True:
         # Normalize the x-coordinate (-1 to 1)
         normalized_position = (line_center_x - BOX_WIDTH // 2) / (BOX_WIDTH // 2)
 
-        # Map normalized position to servo duty cycle range
-        duty_cycle = int(DUTY_MIN + (normalized_position + 1) * (DUTY_MAX - DUTY_MIN) / 2)
+        # Map normalized position to servo pulse width
+        pulse_width = int(DUTY_MIN + (normalized_position + 1) * (DUTY_MAX - DUTY_MIN) / 2)
 
         # Send command to servo
-        pca.channels[STEERING_CHANNEL].duty_cycle = duty_cycle
+        set_pwm(STEERING_CHANNEL, 0, pulse_width)
 
-        print(f"Line Center: {line_center_x}, Normalized: {normalized_position}, Duty Cycle: {duty_cycle}")
+        print(f"Line Center: {line_center_x}, Normalized: {normalized_position}, Pulse Width: {pulse_width}")
 
         # Draw the bounding box and center line
         cv2.rectangle(frame, (box_start_x, box_start_y), (box_end_x, box_end_y), (0, 255, 0), 2)
@@ -74,6 +95,5 @@ while True:
         break
 
 # Clean up
-pca.deinit()
 picam2.stop()
 cv2.destroyAllWindows()
