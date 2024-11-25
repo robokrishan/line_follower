@@ -4,7 +4,9 @@ import cv2
 
 picam2 = Picamera2()
 cam_config = picam2.create_preview_configuration(\
-    transform=Transform(hflip=True, vflip=True))
+    transform=Transform(hflip=True, vflip=True),\
+    main={'size':(1280, 720)})
+
 picam2.configure(cam_config)
 picam2.start()
 
