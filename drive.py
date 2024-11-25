@@ -18,7 +18,7 @@ while True:
 
     edges = cv2.canny(gray, 50, 200)
     
-    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 200)
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=200, maxLineGap=10)
 
     for line in lines:
         rho, theta = line[0]
