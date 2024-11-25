@@ -16,8 +16,8 @@ LED0_ON_L = 0x06
 # Define the steering channel and limits
 STEERING_CHANNEL = 7  # Servo connected to channel 7
 ESC_CHANNEL = 0  # ESC connected to channel 0
-DUTY_MIN = 150  # Minimum pulse width for the servo
-DUTY_MAX = 600  # Maximum pulse width for the servo
+DUTY_MIN = 203  # Minimum pulse width for the servo
+DUTY_MAX = 408  # Maximum pulse width for the servo
 DUTY_THROTTLE = 320  # Fixed duty cycle for ESC (throttle)
 
 # Initialize I2C bus
