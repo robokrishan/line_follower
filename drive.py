@@ -16,13 +16,16 @@ while True:
     
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    edges = cv2.Canny(gray, 50, 200)
-    
-    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=200, maxLineGap=10)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    for line in lines:
-        x1,y1,x2,y2 = line[0]
-        cv2.line(gray,(x1,y1),(x2,y2),(0,255,0),2)
+    edges = cv2.Canny(blurred, 50, 150)
+    
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 50, minLineLength=200, maxLineGap=10)
+
+    if lines:
+        for line in lines:
+            x1,y1,x2,y2 = line[0]
+            cv2.line(gray,(x1,y1),(x2,y2),(0,255,0),2)
 
     cv2.imshow("Camera Feed", gray)
 
