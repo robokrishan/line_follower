@@ -10,7 +10,7 @@ import numpy as np
 # Initialize PCA9685
 i2c = busio.I2C(board.SCL, board.SDA)
 pca = PCA9685(i2c)
-pca.frequency = 60  # Set frequency for servos
+pca.frequency = 50  # Set frequency for servos
 STEERING_CHANNEL = 7  # Servo connected to channel 7
 DUTY_MIN = 203  # Minimum duty cycle for steering servo
 DUTY_MAX = 408  # Maximum duty cycle for steering servo
