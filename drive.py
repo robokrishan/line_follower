@@ -18,7 +18,7 @@ while True:
 
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    edges = cv2.Canny(blurred, 50, 150)
+    edges = cv2.Canny(blurred, 50, 100)
     
     lines = cv2.HoughLinesP(edges, 1, np.pi/180, 10, minLineLength=200, maxLineGap=50)
 
