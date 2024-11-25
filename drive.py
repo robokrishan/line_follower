@@ -3,10 +3,9 @@ from libcamera import ColorSpace, Transform
 import cv2
 
 picam2 = Picamera2()
-preview_config = picam2.create_preview_configuration(\
-    transform=Transform(hflip=True, vflip=True),\
-    height=720,\
-    width=1280)
+cam_config = picam2.create_preview_configuration(\
+    transform=Transform(hflip=True, vflip=True))
+picam2.configure(cam_config)
 picam2.start()
 
 while True:
