@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 from libcamera import Transform
+import time
 
 # PCA9685 Default Address
 I2C_ADDR = 0x40
@@ -14,8 +15,10 @@ LED0_ON_L = 0x06
 
 # Define the steering channel and limits
 STEERING_CHANNEL = 7  # Servo connected to channel 7
-DUTY_MIN = 203  # Minimum pulse width for the servo
-DUTY_MAX = 408  # Maximum pulse width for the servo
+ESC_CHANNEL = 0  # ESC connected to channel 0
+DUTY_MIN = 150  # Minimum pulse width for the servo
+DUTY_MAX = 600  # Maximum pulse width for the servo
+DUTY_THROTTLE = 310  # Fixed duty cycle for ESC (throttle)
 
 # Initialize I2C bus
 bus = smbus2.SMBus(1)
@@ -48,6 +51,10 @@ picam2.start()
 # Define the 200x200 box
 BOX_WIDTH, BOX_HEIGHT = 200, 200
 
+# Send throttle command to ESC (constant throttle)
+set_pwm(ESC_CHANNEL, 0, DUTY_THROTTLE)
+print(f"Throttle Duty Cycle: {DUTY_THROTTLE}")
+
 while True:
     # Capture frame from the camera
     frame = picam2.capture_array()
@@ -77,7 +84,7 @@ while True:
         # Map normalized position to servo pulse width
         pulse_width = int(DUTY_MIN + (normalized_position + 1) * (DUTY_MAX - DUTY_MIN) / 2)
 
-        # Send command to servo
+        # Send command to steering servo
         set_pwm(STEERING_CHANNEL, 0, pulse_width)
 
         print(f"Line Center: {line_center_x}, Normalized: {normalized_position}, Pulse Width: {pulse_width}")
@@ -86,6 +93,7 @@ while True:
         cv2.rectangle(frame, (box_start_x, box_start_y), (box_end_x, box_end_y), (0, 255, 0), 2)
         cv2.line(frame, (box_start_x + line_center_x, box_start_y), 
                  (box_start_x + line_center_x, box_end_y), (0, 255, 0), 2)
+
 
     # Display the processed frame
     cv2.imshow("Camera Feed", frame)
