@@ -6,19 +6,6 @@ import time
 from pca9685 import *
 
 
-# Initialize PCA9685
-def set_pwm_freq(freq_hz):
-    prescale_val = int(25000000.0 / (4096 * freq_hz) - 1)
-    bus.write_byte_data(I2C_ADDR, MODE1, 0x10)  # Sleep mode
-    bus.write_byte_data(I2C_ADDR, PRESCALE, prescale_val)
-    bus.write_byte_data(I2C_ADDR, MODE1, 0x80)  # Restart
-
-def set_pwm(channel, on, off):
-    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel, on & 0xFF)
-    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel + 1, on >> 8)
-    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel + 2, off & 0xFF)
-    bus.write_byte_data(I2C_ADDR, LED0_ON_L + 4 * channel + 3, off >> 8)
-
 # Set PWM frequency to 50Hz for servos
 set_pwm_freq(50)
 
