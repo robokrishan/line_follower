@@ -1,27 +1,9 @@
-# import smbus2
 import cv2
 import numpy as np
 from picamera2 import Picamera2
 from libcamera import Transform
 import time
 from pca9685 import *
-
-# # PCA9685 Default Address
-# I2C_ADDR = 0x40
-
-# # Registers
-# MODE1 = 0x00
-# PRESCALE = 0xFE
-# LED0_ON_L = 0x06
-
-# # Define the steering channel and limits
-# STEERING_CHANNEL = 7        # Servo connected to channel 7
-# ESC_CHANNEL = 0             # ESC connected to channel 0
-# DUTY_MIN = 203              # Minimum pulse width for the servo
-# DUTY_MAX = 408              # Maximum pulse width for the servo
-# DUTY_THROTTLE = 320         # Fixed duty cycle for ESC (throttle)
-# DUTY_NEUTRAL = 307          # Neutral point for ESC & servo
-
 
 
 # Initialize PCA9685
