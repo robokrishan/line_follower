@@ -104,5 +104,7 @@ while True:
         break
 
 # Clean up
+set_pwm(ESC_CHANNEL, 0, DUTY_NEUTRAL)
+set_pwm(STEERING_CHANNEL, 0, DUTY_NEUTRAL)
 picam2.stop()
 cv2.destroyAllWindows()
