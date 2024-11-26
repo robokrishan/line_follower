@@ -5,6 +5,10 @@ from libcamera import Transform
 import time
 from pca9685 import *
 
+print(f"Steering Channel: {STEERING_CHANNEL}")
+print(f"ESC Channel: {ESC_CHANNEL}")
+print(f"Duty Cycle Throttle: {DUTY_THROTTLE}")
+
 
 if __name__ == '__main__':
     # Set PWM frequency to 50Hz for servos
