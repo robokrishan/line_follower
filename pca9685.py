@@ -37,15 +37,15 @@ def sweep(channel):
 
     for i in range(DUTY_NEUTRAL, DUTY_MIN, -5):
         set_pwm(channel, 0, i)
-        time.sleep(0.4)
+        time.sleep(0.01)
 
     for i in range(DUTY_MIN, DUTY_MAX, 5):
         set_pwm(channel, 0, i)
-        time.sleep(0.4)
+        time.sleep(0.01)
 
     for i in range(DUTY_MAX, DUTY_NEUTRAL, -5):
         set_pwm(channel, 0, i)
-        time.sleep(0.4)
+        time.sleep(0.01)
 
     print(' Done!')
 
