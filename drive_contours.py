@@ -7,7 +7,7 @@ from pca9685 import *
 
 print(f"Steering Channel: {STEERING_CHANNEL}")
 print(f"ESC Channel: {ESC_CHANNEL}")
-print(f"Duty Cycle Throttle: {DUTY_THROTTLE}")
+print(f"Duty Cycle Throttle: {DUTY_THROTTLE_CRUISE}")
 
 
 if __name__ == '__main__':
@@ -27,8 +27,8 @@ if __name__ == '__main__':
     BOX_WIDTH, BOX_HEIGHT = 200, 200
 
     # Send throttle command to ESC (constant throttle)
-    set_pwm(ESC_CHANNEL, 0, DUTY_THROTTLE)
-    print(f"Throttle Duty Cycle: {DUTY_THROTTLE}")
+    set_pwm(ESC_CHANNEL, 0, DUTY_THROTTLE_CRUISE)
+    print(f"Throttle Duty Cycle: {DUTY_THROTTLE_CRUISE}")
 
     while True:
         # Capture frame from the camera
