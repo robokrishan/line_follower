@@ -8,6 +8,7 @@ I2C_ADDR = 0x40
 MODE1 = 0x00
 PRESCALE = 0xFE
 LED0_ON_L = 0x06
+PWM_FREQUENCY_HZ = 50
 
 # Define the steering channel and limits
 STEERING_CHANNEL = 7        # Servo connected to channel 7
